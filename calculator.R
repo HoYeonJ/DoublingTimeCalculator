@@ -18,11 +18,13 @@ cellGrowthLog[(2:row),(1:newcol)] = cellGrowthLog[(2:row),(1:newcol)]-
 cellGrowthLog[(1),(1:newcol)]=0
 
 # Take increments of 30 and find the slope of the secant line
+granularity = 30
 newcol = col-1 
 cellGrowthThirty = as.data.frame(matrix(0, row, newcol))
 for (y in (1:newcol)){
-  for (x in (1:row-30)){
-    cellGrowthThirty[x,y] = (cellGrowth[x+30,y+1]-cellGrowth[x,y+1])/30
+  for (x in (1:row-granularity)){
+    cellGrowthThirty[x,y] = (cellGrowth[x+granularity,y+1]-cellGrowth[x,y+1])/
+      granularity
 }
 }
 
@@ -34,7 +36,7 @@ mat = as.data.frame(matrix(0, 3, newcol))
 arr = vector(mode = "double", length = newcol)
 timesarr = vector(mode = "double", length = newcol)
 for (y in (1:newcol)){
-    center= maxes[y]
+    center= maxes[y]+granularity/2
     # Absorbance
     windows = cellGrowth[(center-50: center+50), y+1]
     # Time
