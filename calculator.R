@@ -35,18 +35,19 @@ print(maxes)
 mat = as.data.frame(matrix(0, 3, newcol))
 arr = vector(mode = "double", length = newcol)
 timesarr = vector(mode = "double", length = newcol)
+window = 100
 for (y in (1:newcol)){
     center= maxes[y]+granularity/2
     # Absorbance
-    windows = cellGrowth[(center-50: center+50), y+1]
+    windows = cellGrowth[(center-window/2: center+window/2), y+1]
     # Time
-    x = times[(center-50: center+50)]
+    x = times[(center-window/2: center+window/2)]
     # Linear regression after log transformation
     model = lm(log(windows)~ x)
     timesarr[y] = times[center]
     mat[,y ]= c(log(2)/coefficients(model)[2], times[center], 
                 summary(model)$r.squared)
 }
-print(mat)
-# Result formatted as: Doubling time, center of steepest slope, R^2 value
 
+# Result formatted as: Doubling time, center of steepest slope, R^2 value
+print(mat)
